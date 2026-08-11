@@ -20,13 +20,13 @@ class MediaPlayerWrapper @Inject constructor() {
             isLooping = loop
             setOnPreparedListener {
                 start()
-                isPlaying = true
+                this@MediaPlayerWrapper.isPlaying = true
             }
             setOnCompletionListener {
-                isPlaying = false
+                this@MediaPlayerWrapper.isPlaying = false
             }
             setOnErrorListener { _, _, _ ->
-                isPlaying = false
+                this@MediaPlayerWrapper.isPlaying = false
                 true
             }
             prepareAsync()

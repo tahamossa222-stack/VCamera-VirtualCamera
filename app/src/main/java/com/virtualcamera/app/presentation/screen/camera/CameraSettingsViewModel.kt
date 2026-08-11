@@ -47,10 +47,12 @@ class CameraSettingsViewModel @Inject constructor(
 
     fun switchProfile(profileId: Long) {
         viewModelScope.launch {
-            switchCameraProfileUseCase(profileId)
-                .onFailure { e ->
-                    _uiState.value = _uiState.value.copy(error = e.message)
+            when (val result = switchCameraProfileUseCase(profileId)) {
+                is com.virtualcamera.core.common.Result.Failure -> {
+                    _uiState.value = _uiState.value.copy(error = result.exception.message)
                 }
+                is com.virtualcamera.core.common.Result.Success -> { /* no-op */ }
+            }
         }
     }
 }

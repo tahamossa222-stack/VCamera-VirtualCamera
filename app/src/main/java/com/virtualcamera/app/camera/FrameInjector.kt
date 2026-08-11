@@ -47,8 +47,8 @@ class FrameInjector @Inject constructor(
         val surfaceTexture = surfaceManager.getSurfaceTexture(surfaceId) ?: return
 
         try {
-            val canvas = Canvas()
-            canvas.drawBitmap(bitmap, Rect(0, 0, bitmap.width, bitmap.height), null)
+            val canvas = Canvas(bitmap)
+            canvas.drawBitmap(bitmap, null, Rect(0, 0, bitmap.width, bitmap.height), null)
             surfaceTexture.updateTexImage()
         } catch (e: Exception) {
             e.printStackTrace()

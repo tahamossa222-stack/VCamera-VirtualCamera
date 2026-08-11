@@ -7,7 +7,6 @@ import android.view.Surface
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -43,8 +42,9 @@ class MediaCodecDecoder @Inject constructor() {
         val bufferInfo = MediaCodec.BufferInfo()
         val extractor = extractor ?: return
         val codec = codec ?: return
+        val job = decodeJob
 
-        while (isActive) {
+        while (job?.isActive == true) {
             val inputIndex = codec.dequeueInputBuffer(10_000)
             if (inputIndex >= 0) {
                 val inputBuffer = codec.getInputBuffer(inputIndex) ?: continue

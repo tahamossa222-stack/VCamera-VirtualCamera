@@ -60,11 +60,13 @@ class MediaPickerViewModel @Inject constructor(
                     path = uri.toString(),
                     type = getMediaTypeFromUri(uri)
                 )
-                addMediaSourceUseCase(mediaSource)
-                    .onSuccess { loadMediaSources() }
-                    .onFailure { e ->
-                        _uiState.value = _uiState.value.copy(error = e.message)
+                val result = addMediaSourceUseCase(mediaSource)
+                when (result) {
+                    is com.virtualcamera.core.common.Result.Success -> loadMediaSources()
+                    is com.virtualcamera.core.common.Result.Failure -> {
+                        _uiState.value = _uiState.value.copy(error = result.exception.message)
                     }
+                }
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,

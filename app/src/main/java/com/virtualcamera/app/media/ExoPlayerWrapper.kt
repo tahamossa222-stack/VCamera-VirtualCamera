@@ -29,8 +29,8 @@ class ExoPlayerWrapper @Inject constructor(
             setMediaItem(mediaItem)
             prepare()
             play()
-            isPlaying = true
         }
+        isPlaying = true
     }
 
     fun release() {

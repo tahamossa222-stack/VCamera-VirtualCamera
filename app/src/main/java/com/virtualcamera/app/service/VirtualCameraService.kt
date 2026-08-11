@@ -40,8 +40,16 @@ class VirtualCameraService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_START -> {
-                val source = intent.getParcelableExtra<MediaSource>(EXTRA_MEDIA_SOURCE)
-                source?.let { startVirtualCamera(it) }
+                val sourceName = intent.getStringExtra(EXTRA_MEDIA_SOURCE_NAME)
+                val sourcePath = intent.getStringExtra(EXTRA_MEDIA_SOURCE_PATH)
+                if (sourceName != null && sourcePath != null) {
+                    val source = MediaSource(
+                        name = sourceName,
+                        path = sourcePath,
+                        type = com.virtualcamera.app.domain.model.MediaType.VIDEO
+                    )
+                    startVirtualCamera(source)
+                }
             }
             ACTION_STOP -> {
                 stopVirtualCamera()
@@ -97,6 +105,7 @@ class VirtualCameraService : Service() {
         const val NOTIFICATION_ID = 1
         const val ACTION_START = "com.virtualcamera.ACTION_START"
         const val ACTION_STOP = "com.virtualcamera.ACTION_STOP"
-        const val EXTRA_MEDIA_SOURCE = "extra_media_source"
+        const val EXTRA_MEDIA_SOURCE_NAME = "extra_media_source_name"
+        const val EXTRA_MEDIA_SOURCE_PATH = "extra_media_source_path"
     }
 }

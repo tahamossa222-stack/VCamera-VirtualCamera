@@ -51,21 +51,22 @@ class StreamInputViewModel @Inject constructor(
     fun validate() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isValidating = true)
-            validateStreamUseCase(_uiState.value.url)
-                .onSuccess { result ->
+            when (val result = validateStreamUseCase(_uiState.value.url)) {
+                is com.virtualcamera.core.common.Result.Success -> {
                     _uiState.value = _uiState.value.copy(
                         isValidating = false,
-                        isValid = result.isValid,
-                        validationError = result.error
+                        isValid = result.data.isValid,
+                        validationError = result.data.error
                     )
                 }
-                .onFailure { e ->
+                is com.virtualcamera.core.common.Result.Failure -> {
                     _uiState.value = _uiState.value.copy(
                         isValidating = false,
                         isValid = false,
-                        validationError = e.message
+                        validationError = result.exception.message
                     )
                 }
+            }
         }
     }
 
@@ -78,19 +79,20 @@ class StreamInputViewModel @Inject constructor(
                 type = MediaType.STREAM,
                 protocol = _uiState.value.selectedProtocol
             )
-            addMediaSourceUseCase(source)
-                .onSuccess {
+            when (val result = addMediaSourceUseCase(source)) {
+                is com.virtualcamera.core.common.Result.Success -> {
                     _uiState.value = _uiState.value.copy(
                         isSaving = false,
                         savedSuccessfully = true
                     )
                 }
-                .onFailure { e ->
+                is com.virtualcamera.core.common.Result.Failure -> {
                     _uiState.value = _uiState.value.copy(
                         isSaving = false,
-                        error = e.message
+                        error = result.exception.message
                     )
                 }
+            }
         }
     }
 
