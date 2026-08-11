@@ -1,4 +1,4 @@
-package com.virtualcamera.core.di
+package com.virtualcamera.app.di
 
 import android.content.Context
 import android.content.SharedPreferences
