@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="xposed_scope">
+        <item>com.whatsapp</item>
+        <item>com.instagram.android</item>
+        <item>com.tencent.mm</item>
+        <item>org.telegram.messenger</item>
+        <item>com.google.android.gm</item>
+        <item>com.android.camera</item>
+        <item>com.samsung.android.camera</item>
+    </string-array>
+</resources>
